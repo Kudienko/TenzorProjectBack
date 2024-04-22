@@ -1,4 +1,5 @@
 from aiohttp import ClientSession
+# from async_lru import alru_cache
 
 
 class HTTPClient:
@@ -11,6 +12,7 @@ class HTTPClient:
 
 
 class OpenWeatherHTTPClient(HTTPClient):
+    # @alru_cache
     async def get_weather(self):
         try:
             async with self._session.get(

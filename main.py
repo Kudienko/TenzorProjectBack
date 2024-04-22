@@ -8,8 +8,10 @@ app.include_router(weather_router)
 
 origins = [
     "http://localhost",
-    "http://localhost:8080"
-    "http://127.0.0.1:8080"
+    "http://localhost:8080",
+    "http://localhost:53486",
+    "http://127.0.0.1:8080",
+    "http://127.0.0.1:53486",
 ]
 
 app.add_middleware(
