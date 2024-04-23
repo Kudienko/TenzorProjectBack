@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from src.config import settings
 from src.http_client import OpenWeatherHTTPClient
+from async_lru import alru_cache
 
 from fastapi_users import FastAPIUsers
 
@@ -37,6 +38,7 @@ def hello():
 
 
 @router.get("/get_weather/{city}")
+@alru_cache
 async def get_weather(city: str):
     open_weather_client = OpenWeatherHTTPClient(base_url="https://api.openweathermap.org", city=city,
                                                 api_key=settings.OPEN_WEATHER_KEY)
