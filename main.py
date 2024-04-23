@@ -1,10 +1,15 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from src.router import router as weather_router
 
 app = FastAPI()
 app.include_router(weather_router)
+
+
+# alembic revision --autogenerate -m "Название"
+# alembic upgrade hash-миграции
 
 origins = [
     "http://localhost",

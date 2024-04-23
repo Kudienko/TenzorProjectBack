@@ -5,17 +5,17 @@ Base = declarative_base()
 
 
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
     login = Column(String, nullable=False, unique=True)
     email = Column(String, nullable=False, unique=True)
-    password = Column(String, nullable=False)
+    hashed_password = Column(String, nullable=False)
     city = Column(String)
 
 
-class Clothes(Base):
-    __tablename__ = 'clothes'
+class Clothe(Base):
+    __tablename__ = 'clothe'
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
