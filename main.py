@@ -8,8 +8,8 @@ app = FastAPI()
 app.include_router(weather_router)
 
 
-# alembic revision --autogenerate -m "Название"
-# alembic upgrade hash-миграции
+# Создание миграции - alembic revision --autogenerate -m "Название"
+# Применение миграции - alembic upgrade hash-миграции
 
 origins = [
     "http://localhost",

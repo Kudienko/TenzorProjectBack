@@ -15,7 +15,7 @@ class BaseUserUpdate(BaseModel):
     city: str | None = None
 
 
-class UserRead(BaseUserCreate):
+class UserRead(BaseModel):
     id: int
     email: EmailStr
     login: str
@@ -23,7 +23,6 @@ class UserRead(BaseUserCreate):
 
     class Config:
         from_attributes = True
-        orm_mode: True
 
 
 class UserCreate(BaseUserCreate):

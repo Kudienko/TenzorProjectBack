@@ -24,6 +24,7 @@ class CustomUser(Base):
     hashed_password = Column(String, nullable=False)
     city = Column(String)
 
+    is_active = True
 
 engine = create_async_engine(DATABASE_URL)
 
@@ -44,13 +45,13 @@ class CustomSQLAlchemyUserDatabase(SQLAlchemyUserDatabase):
         result = await self.session.execute(
             select(self.user_model).where(self.user_model.email == email)
         )
-        return result.first()
+        return result.scalars().first()
 
     async def get_by_login(self, login: str):
         result = await self.session.execute(
             select(self.user_model).where(self.user_model.login == login)
         )
-        return result.first()
+        return result.scalars().first()
 
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
