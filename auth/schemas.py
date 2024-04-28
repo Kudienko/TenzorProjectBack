@@ -5,7 +5,6 @@ class BaseUserCreate(BaseModel):
     login: str
     email: EmailStr
     hashed_password: str
-    city: str | None = None
 
 
 class BaseUserUpdate(BaseModel):

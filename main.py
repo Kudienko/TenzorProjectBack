@@ -7,15 +7,17 @@ from src.router import router as weather_router
 app = FastAPI()
 app.include_router(weather_router)
 
-
+# Установка библиотек - pip install -r requirements.txt
 # Создание миграции - alembic revision --autogenerate -m "Название"
-# Применение миграции - alembic upgrade hash-миграции
+# Применение миграции - alembic upgrade "hash-миграции"
 
 origins = [
     "http://localhost",
     "http://localhost:8080",
     "http://localhost:53486",
+    "http://localhost:3000",
     "http://127.0.0.1:8080",
+    "http://127.0.0.1:3000",
     "http://127.0.0.1:53486",
 ]
 

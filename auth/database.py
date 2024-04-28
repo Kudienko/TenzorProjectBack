@@ -22,7 +22,7 @@ class CustomUser(Base):
     login = Column(String, nullable=False, unique=True)
     email = Column(String, nullable=False, unique=True)
     hashed_password = Column(String, nullable=False)
-    city = Column(String)
+    city = Column(String, default="Москва")
 
     is_active = True
 
