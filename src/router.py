@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
 from src.config import settings
 from src.http_client import OpenWeatherHTTPClient
 from async_lru import alru_cache
@@ -8,7 +8,7 @@ from fastapi_users import FastAPIUsers
 from auth.auth import auth_backend
 from auth.database import CustomUser
 from auth.manager import get_user_manager
-from auth.schemas import UserRead, UserCreate
+from auth.schemas import UserRead, UserCreate, UserUpdate
 
 router = APIRouter(
     prefix="/api"
@@ -32,6 +32,13 @@ router.include_router(
 )
 
 
+router.include_router(
+    fastapi_users.get_users_router(UserRead, UserUpdate),
+    prefix="/users",
+    tags=["users"],
+)
+
+
 @router.get("/hello")
 def hello():
     return {"message": "Hello!"}
@@ -43,4 +50,3 @@ async def get_weather(city: str):
     open_weather_client = OpenWeatherHTTPClient(base_url="https://api.openweathermap.org", city=city,
                                                 api_key=settings.OPEN_WEATHER_KEY)
     return await open_weather_client.get_weather()
-
