@@ -10,6 +10,7 @@ app.include_router(weather_router)
 # Установка библиотек - pip install -r requirements.txt
 # Создание миграции - alembic revision --autogenerate -m "Название"
 # Применение миграции - alembic upgrade "hash-миграции"
+# https://github.com/tporadowski/redis/releases - redis
 
 origins = [
     "http://localhost",
