@@ -1,6 +1,7 @@
 from aiohttp import ClientSession
 # from async_lru import alru_cache
 from fastapi_cache.decorator import cache
+from fastapi import HTTPException
 
 
 class HTTPClient:
@@ -19,6 +20,8 @@ class OpenWeatherHTTPClient(HTTPClient):
                     f'/data/2.5/forecast?lat={lat}&lon={lon}&appid={self._api_key}&lang=ru&units=metric') as response:
                 result = await response.json()
                 return result
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Произошла ошибка при получении погоды. {e.message}")
         finally:
             await self._session.close()
 
@@ -29,5 +32,7 @@ class OpenWeatherHTTPClient(HTTPClient):
                     f'/geo/1.0/direct?q={city}&limit=4&appid={self._api_key}') as response:
                 result = await response.json()
                 return result
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Произошла ошибка при получении города. {e.message}")
         finally:
             await self._session.close()
