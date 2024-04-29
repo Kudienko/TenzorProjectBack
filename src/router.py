@@ -51,20 +51,20 @@ def hello():
     return {"message": "Hello!"}
 
 
-@router.get("/get_weather/{city}")
+@router.get("/get_weather")
 @cache(expire=120)
-async def get_weather(city: str):
-    open_weather_client = OpenWeatherHTTPClient(base_url="https://api.openweathermap.org", city=city,
+async def get_weather(lat: str, lon: str):
+    open_weather_client = OpenWeatherHTTPClient(base_url="https://api.openweathermap.org",
                                                 api_key=settings.OPEN_WEATHER_KEY)
-    return await open_weather_client.get_weather()
+    return await open_weather_client.get_weather(lat=lat, lon=lon)
 
 
-@router.get("/cities/{city}")
+@router.get("/get_city")
 @cache(expire=120)
-async def get_similar_cities(input_city: str):
-    open_weather_client = OpenWeatherHTTPClient(base_url="https://api.openweathermap.org", city=input_city,
+async def get_similar_cities(city: str):
+    open_weather_client = OpenWeatherHTTPClient(base_url="https://api.openweathermap.org",
                                                 api_key=settings.OPEN_WEATHER_KEY)
-    return await open_weather_client.get_city_info()
+    return await open_weather_client.get_city_info(city=city)
 
 
 # Загрузка redis при старте сервера
