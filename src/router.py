@@ -15,6 +15,8 @@ from fastapi_cache.backends.redis import RedisBackend
 from fastapi_cache.decorator import cache
 from redis import asyncio as aioredis
 
+import json
+
 
 router = APIRouter(
     prefix="/api"
@@ -61,14 +63,21 @@ async def get_weather(lat: str, lon: str):
 
 @router.get("/get_city")
 @cache(expire=120)
-async def get_similar_cities(city: str):
-    open_weather_client = OpenWeatherHTTPClient(base_url="https://api.openweathermap.org",
-                                                api_key=settings.OPEN_WEATHER_KEY)
-    return await open_weather_client.get_city_info(city=city)
+async def get_similar_cities(city_query: str):
+    cities_str = await cache_backend.get("cities")
+    cities = json.loads(cities_str) if cities_str else []
+    search_results = [city for city in cities if city_query.lower() in city["city_name"].lower()]
+    return search_results
 
 
-# Загрузка redis при старте сервера
+# Загрузка redis и городов при старте сервера
 @router.on_event("startup")
 async def load_cities():
+    global cache_backend
     redis = aioredis.from_url("redis://localhost")
-    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+    cache_backend = RedisBackend(redis)
+    FastAPICache.init(cache_backend, prefix="fastapi-cache")
+    with open('cities.json', 'r', encoding='utf-8-sig') as f:
+        city_data = json.load(f)
+        cities = city_data if isinstance(city_data, list) else city_data.get("city", [])
+        await cache_backend.set("cities", json.dumps(cities))

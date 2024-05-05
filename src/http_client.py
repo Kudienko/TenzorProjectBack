@@ -24,15 +24,3 @@ class OpenWeatherHTTPClient(HTTPClient):
             raise HTTPException(status_code=500, detail=f"Произошла ошибка при получении погоды. {e.message}")
         finally:
             await self._session.close()
-
-    @cache(expire=120)
-    async def get_city_info(self, city: str):
-        try:
-            async with self._session.get(
-                    f'/geo/1.0/direct?q={city}&limit=4&appid={self._api_key}') as response:
-                result = await response.json()
-                return result
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Произошла ошибка при получении города. {e.message}")
-        finally:
-            await self._session.close()
